@@ -16,9 +16,13 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(name = "age",nullable = false)
     private int age;
+    @Column(name = "name",nullable = false,unique = true,length = 128)
     private String name;
+    @Column(name = "email", nullable = false)
     private String email;
+    @Column(name = "birthday",nullable = false)
     @DateTimeFormat(iso= DateTimeFormat.ISO.DATE)
     private LocalDate birthday;
 

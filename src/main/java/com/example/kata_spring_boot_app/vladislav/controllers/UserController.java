@@ -1,7 +1,8 @@
 package com.example.kata_spring_boot_app.vladislav.controllers;
 
 import com.example.kata_spring_boot_app.vladislav.entity.User;
-import com.example.kata_spring_boot_app.vladislav.services.UserService;
+import com.example.kata_spring_boot_app.vladislav.services.UserServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -12,42 +13,42 @@ import java.util.List;
 @RequestMapping("/users")
 public class UserController {
 
-    private final UserService userService;
-
-    public UserController(UserService userService) {
-        this.userService = userService;
+    private final UserServiceImpl userServiceImpl;
+    @Autowired
+    public UserController(UserServiceImpl userServiceImpl) {
+        this.userServiceImpl = userServiceImpl;
     }
 
     @GetMapping
     public String getUsers(Model model) {
-        List<User> users = userService.findAllUsers();
+        List<User> users = userServiceImpl.findAllUsers();
         model.addAttribute("users",users);
         return "users";
     }
 
     @PostMapping("/new")
     public String createUser(User user) {
-        userService.createUser(user);
+        userServiceImpl.createUser(user);
         return "redirect:/users";
     }
 
     @GetMapping("{id}/delete")
     public String deleteUser(@PathVariable Long id) {
-        userService.deleteUserById(id);
+        userServiceImpl.deleteUserById(id);
         return "redirect:/users";
     }
 
     @GetMapping("/{id}")
-    public String editUser(@PathVariable Long id,
+    public String updateUserForm(@PathVariable Long id,
                            Model model) {
-        User user = userService.findUserById(id);
+        User user = userServiceImpl.findUserById(id);
         model.addAttribute("user",user);
         return "usersEdit";
     }
 
     @PostMapping("/{id}")
     public String updateUser(User user) {
-        userService.updateUser(user);
+        userServiceImpl.updateUser(user);
         return "redirect:/users";
     }
 }
